@@ -1,0 +1,9 @@
+version: '3.4'
+services:
+  api:
+    image: wigo4it/identityserver4
+    build:
+      context: .
+      dockerfile: Dockerfile
+    hostname: identityserver4
+    restart: always
