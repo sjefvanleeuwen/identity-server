@@ -3,6 +3,8 @@
 This project contains powershell and docker scripts for pulling in IdentityServer from: 
 https://github.com/IdentityServer/IdentityServer4
 
+**Do not use the identity server in production, as there is no unique private key and the storage of all the accounts are in volatile memory.**
+
 1. Clones the repo into ext/identityserver
 2. Builds the identity server using provider build script
 3. publishes the Host project using dotnet publish
@@ -117,4 +119,94 @@ PS C:\Users\*******\identity-server\ext\identityserver4>
 
 ```
 docker run --rm -p 5099:80 wigo4it/identityserver4:latest --environment="Development"
+```
+
+You should now be able to see the openid configuration with endpoints for your client implementations:
+
+http://localhost:5099/.well-known/openid-configuration
+
+```json
+{
+   "issuer":"http://localhost:5099",
+   "jwks_uri":"http://localhost:5099/.well-known/openid-configuration/jwks",
+   "authorization_endpoint":"http://localhost:5099/connect/authorize",
+   "token_endpoint":"http://localhost:5099/connect/token",
+   "userinfo_endpoint":"http://localhost:5099/connect/userinfo",
+   "end_session_endpoint":"http://localhost:5099/connect/endsession",
+   "check_session_iframe":"http://localhost:5099/connect/checksession",
+   "revocation_endpoint":"http://localhost:5099/connect/revocation",
+   "introspection_endpoint":"http://localhost:5099/connect/introspect",
+   "frontchannel_logout_supported":true,
+   "frontchannel_logout_session_supported":true,
+   "backchannel_logout_supported":true,
+   "backchannel_logout_session_supported":true,
+   "scopes_supported":[
+      "openid",
+      "profile",
+      "email",
+      "custom.profile",
+      "api1",
+      "api2.full_access",
+      "api2.read_only",
+      "offline_access"
+   ],
+   "claims_supported":[
+      "sub",
+      "name",
+      "family_name",
+      "given_name",
+      "middle_name",
+      "nickname",
+      "preferred_username",
+      "profile",
+      "picture",
+      "website",
+      "gender",
+      "birthdate",
+      "zoneinfo",
+      "locale",
+      "updated_at",
+      "email",
+      "email_verified",
+      "location"
+   ],
+   "grant_types_supported":[
+      "authorization_code",
+      "client_credentials",
+      "refresh_token",
+      "implicit",
+      "password",
+      "custom",
+      "custom.nosubject"
+   ],
+   "response_types_supported":[
+      "code",
+      "token",
+      "id_token",
+      "id_token token",
+      "code id_token",
+      "code token",
+      "code id_token token"
+   ],
+   "response_modes_supported":[
+      "form_post",
+      "query",
+      "fragment"
+   ],
+   "token_endpoint_auth_methods_supported":[
+      "client_secret_basic",
+      "client_secret_post",
+      "private_key_jwt"
+   ],
+   "subject_types_supported":[
+      "public"
+   ],
+   "id_token_signing_alg_values_supported":[
+      "RS256"
+   ],
+   "code_challenge_methods_supported":[
+      "plain",
+      "S256"
+   ]
+}
 ```
